@@ -16,8 +16,7 @@ import os
 
 
 #필요한 정보 입력받기
-# API_KEY="fbd3f31ee413a318c81b0fe2bc0ad8b283dcfe21"
-# company_code="00184667"
+
 api_key = str(input("1.인증키를 입력하세요 : "))
 com_no = str(input("2.기업 고유 번호를 입력하세요 : "))
 rep_kind = int(input("3.보고서 종류를 숫자로 입력하세요 (1.대량보유 상황보고서 / 2.임원주요주주 소유보고서) : "))

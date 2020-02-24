@@ -15,24 +15,25 @@ import os
 #            소액 주주현황, 임원현황 직원 현황, 타법인 출자현황, 단일회사 주요계정, 다중회사 주요계정
 
 ### 필요한 정보 입력받기
-# API_KEY="fbd3f31ee413a318c81b0fe2bc0ad8b283dcfe21"
-# company_code="00184667"
+
 api_key = str(input("1.인증키를 입력하세요 : "))
-com_no = str(input("2.기업 고유 번호를 입력하세요 : ")).split(",")
-rep_kind = int(input('''3. 보고서 종류를 숫자로 입력해주세요 
+com_no = str(input("2.기업 고유 번호를 입력하세요 : "))
+bsns_year = str(input("3. 사업년도를 입력하세요 : "))
+rep_code = str(input("4. 보고서 코드를 숫자로 입력하세요 (1분기보고서 / 11013 | 반기보고서 : 11012 | 3분기보고서 : 11014 |사업보고서 : 11011) : "))
+rep_kind = int(input('''5. 보고서 종류를 숫자로 입력해주세요 
         1. 증자(감자)현황 배당에 관한 사항    2. 자기취득 및 처분현황
         3. 최대 주주현황    4. 최대주주 변동현황
-        5. 소액 주주현황    6. 임원현황 직원 현황
+        5. 소액 주주현황    6. 임원현황 & 직원현황
         7. 타법인 출자현황  8. 단일회사 주요계정
         9. 다중회사 주요계정
 '''))
-file_path = input("4.엑셀 파일을 저장할 폴더명만 쓰세요 : (예:C:\py_temp) ")
+file_path = input("6.엑셀 파일을 저장할 폴더명만 쓰세요 : (예:C:\py_temp) ")
 
 
 if rep_kind == 1:
     try:
         #증자(감자)현황 배당에 관한 사항
-        url3 = "https://opendart.fss.or.kr/api/irdsSttus.xml?crtfc_key="+api_key+"&corp_code="+com_no+"&bsns_year=2018&reprt_code=11011"
+        url3 = "https://opendart.fss.or.kr/api/irdsSttus.xml?crtfc_key="+api_key+"&corp_code="+com_no+"&bsns_year="+bsns_year+"&reprt_code="+rep_code
         print(url3)
         
         resultXML3 = urlopen(url3)
@@ -49,16 +50,16 @@ if rep_kind == 1:
                                    "발행 감소 주식 종류","발행 감소 수량",
                                    "발행 감소 주당 액면가액","발행 감소 주당 가액"])
             data3 = pd.concat([data3,temp3])
-            file_nm = "유진기업_증자(감자)현황 배당에 관한 사항.xlsx"
+            file_nm = "유진기업_"+bsns_year+"년도 증자(감자)현황 배당에 관한 사항.xlsx"
             data3.to_excel(os.path.join(file_path, file_nm),encoding="euc-kr",index=False)
         
-    except AssertionError as er:
+    except AttributeError as er:
         print("에러입니다")
 
 elif rep_kind == 2:
     try:
         #자기취득 및 처분현황
-        url4 = "https://opendart.fss.or.kr/api/tesstkAcqsDspsSttus.xml?crtfc_key="+api_key+"&corp_code="+com_no+"&bsns_year=2018&reprt_code=11011"
+        url4 = "https://opendart.fss.or.kr/api/tesstkAcqsDspsSttus.xml?crtfc_key="+api_key+"&corp_code="+com_no+"&bsns_year="+bsns_year+"&reprt_code="+rep_code
         print(url4)
         resultXML4 = urlopen(url4)
         result4 = resultXML4.read()
@@ -75,16 +76,16 @@ elif rep_kind == 2:
                                  columns = ["접수번호","법인구분","고유번호","법인명","주식 종류", "취득 방법 1", "취득 방법 2" , 
                                             "취득 방법 3", "기초 수량","변동 수량 취득","변동 수량 처분", "변동 수량 소각", "기말 수량", "비고"])
             data4 = pd.concat([data4,temp4])
-            file_nm = "유진기업_자기취득 및 처분현황.xlsx"
+            file_nm = "유진기업_"+bsns_year+"년도 자기취득 및 처분현황.xlsx"
             data4.to_excel(os.path.join(file_path, file_nm),encoding="euc-kr",index=False)
 
-    except AssertionError:
+    except AttributeError as er:
         print("에러입니다")
         
 elif rep_kind ==3:
     try:
         #최대 주주현황
-        url5 = "https://opendart.fss.or.kr/api/hyslrSttus.xml?crtfc_key="+api_key+"&corp_code="+com_no+"&bsns_year=2018&reprt_code=11011"
+        url5 = "https://opendart.fss.or.kr/api/hyslrSttus.xml?crtfc_key="+api_key+"&corp_code="+com_no+"&bsns_year="+bsns_year+"&reprt_code="+rep_code
         print(url5)
         
         resultXML5 = urlopen(url5)
@@ -101,17 +102,17 @@ elif rep_kind ==3:
                                  columns = ["접수번호","법인구분","고유번호","법인명","주식 종류", "비고", "성명" , 
                                             "관계", "기초 소유 주식 수","기초 소유 주식 지분율","기말 소유 주식 수", "기말 소유 주식 지분율"])
             data5 = pd.concat([data5,temp5])
-            file_nm = "유진기업_최대 주주현황.xlsx"
+            file_nm = "유진기업_"+bsns_year+"년도 최대 주주현황.xlsx"
             data5.to_excel(os.path.join(file_path, file_nm),encoding="euc-kr",index=False)
 
         
-    except AssertionError:
-        print("Tag was not found")
-        
+    except AttributeError as er:
+            print("태그 속성이 비어있습니다(NONE) : 엑셀화 무방합니다")
+            
 elif rep_kind == 4:
     try:
         #최대주주 변동 현황
-        url6 = "https://opendart.fss.or.kr/api/hyslrChgSttus.xml?crtfc_key="+api_key+"&corp_code="+com_no+"&bsns_year=2018&reprt_code=11011"
+        url6 = "https://opendart.fss.or.kr/api/hyslrChgSttus.xml?crtfc_key="+api_key+"&corp_code="+com_no+"&bsns_year="+bsns_year+"&reprt_code="+rep_code
         print(url6)
         
         resultXML6 = urlopen(url6)
@@ -128,17 +129,16 @@ elif rep_kind == 4:
                                             "최대 주주 명", "소유 주식 수","지분 율","변동 원인"])
             
             data6 = pd.concat([data6,temp6])
-            file_nm = "유진기업_최대주주 변동 현황.xlsx"
+            file_nm = "유진기업_"+bsns_year+"년도 최대주주 변동 현황.xlsx"
             data6.to_excel(os.path.join(file_path, file_nm),encoding="euc-kr",index=False)
             
         
-    except AssertionError:
+    except AttributeError as er:
         print("에러입니다")
         
 elif rep_kind == 5:
     try:
-        #소액주주현황
-        url7 = "https://opendart.fss.or.kr/api/mrhlSttus.xml?crtfc_key="+api_key+"&corp_code="+com_no+"&bsns_year=2018&reprt_code=11011"
+        url7 = "https://opendart.fss.or.kr/api/mrhlSttus.xml?crtfc_key="+api_key+"&corp_code="+com_no+"&bsns_year="+bsns_year+"&reprt_code="+rep_code
         print(url7)
         
         
@@ -156,15 +156,15 @@ elif rep_kind == 5:
                                             "주주 비율", "보유 주식 수"," 보유 주식 비율"])
             
             data7 = pd.concat([data7,temp7])
-            file_nm = "유진기업_소액주주현황.xlsx"
+            file_nm = "유진기업_"+bsns_year+"년도 소액주주현황.xlsx"
             data7.to_excel(os.path.join(file_path, file_nm),encoding="euc-kr",index=False)
-    except AssertionError:
+    except AttributeError as er:
         print("에러입니다.")
         
 elif rep_kind == 6:
     try:
         #임원현황
-        url8 = "https://opendart.fss.or.kr/api/exctvSttus.xml?crtfc_key="+api_key+"&corp_code="+com_no+"&bsns_year=2018&reprt_code=11011" 
+        url8 = "https://opendart.fss.or.kr/api/exctvSttus.xml?crtfc_key="+api_key+"&corp_code="+com_no+"&bsns_year="+bsns_year+"&reprt_code="+rep_code 
         print(url8)
         resultXML8 = urlopen(url8)
         result8 = resultXML8.read()
@@ -179,11 +179,11 @@ elif rep_kind == 6:
                                  columns = ["접수번호","법인구분","고유번호","법인명","성명","성별","출생 년월","직위","등기 임원 여부",
                                             "상근 여부","담당 업무","주요 경력","최대 주주 관계","재직 기간","임기 만료 일"])
             data8 = pd.concat([data8, temp8])
-            file_nm = "유진기업_임원현황.xlsx"
+            file_nm = "유진기업_"+bsns_year+"년도 임원현황.xlsx"
             data8.to_excel(os.path.join(file_path, file_nm),encoding="euc-kr",index=False)
         
         #직원현황
-        url9 = "https://opendart.fss.or.kr/api/empSttus.xml?crtfc_key="+api_key+"&corp_code="+com_no+"&bsns_year=2018&reprt_code=11011"
+        url9 = "https://opendart.fss.or.kr/api/empSttus.xml?crtfc_key="+api_key+"&corp_code="+com_no+"&bsns_year="+bsns_year+"&reprt_code="+rep_code
         print(url9)
         resultXML9 = urlopen(url9)
         result9 = resultXML9.read()
@@ -201,15 +201,17 @@ elif rep_kind == 6:
                                             "개정 전 직원 수 기타","정규직 수","정규직 단시간 근로자 수 ","계약직 수","계약직 단시간 근로자 수",
                                             "합계","평균 근속 연수","연간 급여 총액","1인평균 급여액"])
             data9 = pd.concat([data9, temp9])
-            file_nm = "유진기업_직원현황.xlsx"
+            file_nm = "유진기업_"+bsns_year+"년도 직원현황.xlsx"
             data9.to_excel(os.path.join(file_path, file_nm),encoding="euc-kr",index=False)
-    except AssertionError:
+        
+        
+    except AttributeError as er:
         print("에러입니다.")
-
+        
 elif rep_kind == 7:
     try:
         #타법인출자현황
-        url10 = "https://opendart.fss.or.kr/api/otrCprInvstmntSttus.xml?crtfc_key="+api_key+"&corp_code="+com_no+"&bsns_year=2018&reprt_code=11011"
+        url10 = "https://opendart.fss.or.kr/api/otrCprInvstmntSttus.xml?crtfc_key="+api_key+"&corp_code="+com_no+"&bsns_year="+bsns_year+"&reprt_code="+rep_code
         print(url10)
         
         resultXML10 = urlopen(url10)
@@ -230,17 +232,17 @@ elif rep_kind == 7:
                                             "기말 잔액 지분 율","기말 잔액 장부 가액","최근 사업 연도 재무 현황 총 자산","최근 사업 연도 재무 현황 당기 순이익"])
             
             data10 = pd.concat([data10,temp10])
-            file_nm = "유진기업_타법인출자현황.xlsx"
+            file_nm = "유진기업_"+bsns_year+"년도 타법인출자현황.xlsx"
             data10.to_excel(os.path.join(file_path, file_nm),encoding="euc-kr",index=False)
-
-    except AssertionError:
+    except AttributeError as er:
         print("에러입니다.")
+        
 
-
+        
 elif rep_kind == 8:
     try:
         #단일회사 주요 계정
-        url11 = "https://opendart.fss.or.kr/api/fnlttSinglAcnt.xml?crtfc_key="+api_key+"&corp_code="+com_no+"&bsns_year=2018&reprt_code=11011"
+        url11 = "https://opendart.fss.or.kr/api/fnlttSinglAcnt.xml?crtfc_key="+api_key+"&corp_code="+com_no+"&bsns_year="+bsns_year+"&reprt_code="+rep_code
         print(url11)
         
         resultXML11 = urlopen(url11)
@@ -260,25 +262,17 @@ elif rep_kind == 8:
                                             "전기일자","전기금액","전전기명","전전기일자","전전기금액","계정과목 정렬순서"])
             
             data11 = pd.concat([data11,temp11])
-            file_nm = "유진기업_단일회사 주요 계정.xlsx"
+            file_nm = "유진기업_"+bsns_year+"년도 단일회사 주요 계정.xlsx"
             data11.to_excel(os.path.join(file_path, file_nm),encoding="euc-kr",index=False)
 
-    except AssertionError:
+    except AttributeError as er:
         print("에러입니다.")
-
-elif rep_kind == 9:
-    try:
-        url12 = "https://opendart.fss.or.kr/api/fnlttMultiAcnt.xml?crtfc_key="+api_key+"&corp_code=00356370,00334624&bsns_year=2018&reprt_code=11011"
-        print(url12)
-    except :
-        print("에러입니다.")
-
-
+        
 elif rep_kind == 9:
     try:
         #다중회사 주요 계정
-        com_a = str(input("6. 추가로 선택할 기업 1개의 고유번호를 입력하시오 : "))
-        url12 = "https://opendart.fss.or.kr/api/fnlttMultiAcnt.xml?crtfc_key="+api_key+"&corp_code="+com_a+","+com_no+"&bsns_year=2018&reprt_code=11011"
+        com_a = str(input("7. 추가로 선택할 기업 1개의 고유번호를 입력하시오 : "))
+        url12 = "https://opendart.fss.or.kr/api/fnlttMultiAcnt.xml?crtfc_key="+api_key+"&corp_code="+com_a+","+com_no+"&bsns_year="+bsns_year+"&reprt_code="+rep_code
         print(url12)
         
         resultXML12 = urlopen(url12)
@@ -298,10 +292,9 @@ elif rep_kind == 9:
                                             "전기일자","전기금액","전전기명","전전기일자","전전기금액","계정과목 정렬순서"])
             
             data12 = pd.concat([data12,temp12])
-            file_nm = "유진기업+다중회사 주요 계정.xlsx"
+            file_nm = "유진기업+"+bsns_year+"년도 다중회사 주요 계정.xlsx"
             data12.to_excel(os.path.join(file_path, file_nm),encoding="euc-kr",index=False)
-    except:
+    except AttributeError as er:
         print("에러입니다.")
-
 else:
     print("레포트 종류 번호를 선택해주세요")
