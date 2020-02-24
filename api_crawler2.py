@@ -79,6 +79,7 @@ elif rep_kind == 2:
             file_nm = "유진기업_"+bsns_year+"년도 자기취득 및 처분현황.xlsx"
             data4.to_excel(os.path.join(file_path, file_nm),encoding="euc-kr",index=False)
 
+    #relate 요소가 없는 리스트가 있기 때문에 , attrubtueerror 을 걸어놓고 무시할 수 있는 오류임으로 넘어갑니다.
     except AttributeError as er:
         print("에러입니다")
         
