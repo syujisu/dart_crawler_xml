@@ -7,6 +7,7 @@ from bs4 import BeautifulSoup
 import webbrowser
 from urllib.request import urlopen
 from pandas.io.json import json_normalize
+import traceback
 import os
 
 # B.py
@@ -53,9 +54,9 @@ if rep_kind == 1:
             file_nm = "유진기업_"+bsns_year+"년도 증자(감자)현황 배당에 관한 사항.xlsx"
             data3.to_excel(os.path.join(file_path, file_nm),encoding="euc-kr",index=False)
         
-    except AttributeError as er:
-        print("에러입니다")
-
+    except Exception as e :
+            print(traceback.format_exc())
+            
 elif rep_kind == 2:
     try:
         #자기취득 및 처분현황
@@ -79,9 +80,8 @@ elif rep_kind == 2:
             file_nm = "유진기업_"+bsns_year+"년도 자기취득 및 처분현황.xlsx"
             data4.to_excel(os.path.join(file_path, file_nm),encoding="euc-kr",index=False)
 
-    #relate 요소가 없는 리스트가 있기 때문에 , attrubtueerror 을 걸어놓고 무시할 수 있는 오류임으로 넘어갑니다.
-    except AttributeError as er:
-        print("에러입니다")
+    except Exception as e :
+            print(traceback.format_exc())
         
 elif rep_kind ==3:
     try:
@@ -106,9 +106,9 @@ elif rep_kind ==3:
             file_nm = "유진기업_"+bsns_year+"년도 최대 주주현황.xlsx"
             data5.to_excel(os.path.join(file_path, file_nm),encoding="euc-kr",index=False)
 
-        
-    except AttributeError as er:
-            print("태그 속성이 비어있습니다(NONE) : 엑셀화 무방합니다")
+        #relate 요소가 없는 리스트가 있지만 데이터프레임 생성하는데 오류는 없기에 오류만 찍고 넘어갑니다.
+    except Exception as e :
+            print(traceback.format_exc())
             
 elif rep_kind == 4:
     try:
@@ -134,8 +134,8 @@ elif rep_kind == 4:
             data6.to_excel(os.path.join(file_path, file_nm),encoding="euc-kr",index=False)
             
         
-    except AttributeError as er:
-        print("에러입니다")
+    except Exception as e :
+            print(traceback.format_exc())
         
 elif rep_kind == 5:
     try:
@@ -159,8 +159,9 @@ elif rep_kind == 5:
             data7 = pd.concat([data7,temp7])
             file_nm = "유진기업_"+bsns_year+"년도 소액주주현황.xlsx"
             data7.to_excel(os.path.join(file_path, file_nm),encoding="euc-kr",index=False)
-    except AttributeError as er:
-        print("에러입니다.")
+    
+    except Exception as e :
+            print(traceback.format_exc())
         
 elif rep_kind == 6:
     try:
@@ -206,8 +207,8 @@ elif rep_kind == 6:
             data9.to_excel(os.path.join(file_path, file_nm),encoding="euc-kr",index=False)
         
         
-    except AttributeError as er:
-        print("에러입니다.")
+    except Exception as e :
+            print(traceback.format_exc())
         
 elif rep_kind == 7:
     try:
@@ -235,8 +236,9 @@ elif rep_kind == 7:
             data10 = pd.concat([data10,temp10])
             file_nm = "유진기업_"+bsns_year+"년도 타법인출자현황.xlsx"
             data10.to_excel(os.path.join(file_path, file_nm),encoding="euc-kr",index=False)
-    except AttributeError as er:
-        print("에러입니다.")
+            
+    except Exception as e :
+            print(traceback.format_exc())
         
 
         
@@ -266,8 +268,8 @@ elif rep_kind == 8:
             file_nm = "유진기업_"+bsns_year+"년도 단일회사 주요 계정.xlsx"
             data11.to_excel(os.path.join(file_path, file_nm),encoding="euc-kr",index=False)
 
-    except AttributeError as er:
-        print("에러입니다.")
+    except Exception as e :
+            print(traceback.format_exc())
         
 elif rep_kind == 9:
     try:
@@ -295,7 +297,7 @@ elif rep_kind == 9:
             data12 = pd.concat([data12,temp12])
             file_nm = "유진기업+"+bsns_year+"년도 다중회사 주요 계정.xlsx"
             data12.to_excel(os.path.join(file_path, file_nm),encoding="euc-kr",index=False)
-    except AttributeError as er:
-        print("에러입니다.")
+    except Exception as e :
+            print(traceback.format_exc())
 else:
     print("레포트 종류 번호를 선택해주세요")

@@ -8,7 +8,12 @@ import webbrowser
 from urllib.request import urlopen
 from pandas.io.json import json_normalize
 import os
+import traceback
 
+
+# A.py 
+# - 입력 : 인증키, 고유번호
+# - 출력 : 대량보유 상황보고와 임원주요주주 소유보고
 
 # A.py 
 # - 입력 : 인증키, 고유번호
@@ -23,7 +28,6 @@ rep_kind = int(input("3.보고서 종류를 숫자로 입력하세요 (1.대량�
 file_path = input("4.엑셀 파일을 저장할 폴더명만 쓰세요 : (예:C:\py_temp) ")
 
 
-#보고서 종류에 따라 excel로 정리 
 #보고서 종류에 따라 excel로 정리 
 
 if rep_kind == 1:
@@ -47,11 +51,12 @@ if rep_kind == 1:
                         columns = ["접수번호","접수일자","회사명","종목코드","보고구분","대표보고자","보유주식등의 수","보유주식등의 증감",
                                    "보유비율","보유비율 증감","주요체결 주식등의 수","주요체결 보유비율","보고사유"])
             data = pd.concat([data,temp1])
+            #둘 이상의 Dataframe이 동일한 컬럼을 갖고 있다는 가정에서 row가 늘어하는 형태로 데이터가 늘어납니다.
             file_nm = "유진기업_대량보유상황보고서.xlsx"
             data.to_excel(os.path.join(file_path, file_nm),encoding="euc-kr",index=False)
             
-    except AttributeError as er:
-        print("속성이 잘못 되었습니다.")
+    except Exception as e :
+            print(traceback.format_exc())
         
 elif rep_kind ==2 :
     try:
@@ -65,6 +70,7 @@ elif rep_kind ==2 :
         xmlsoup2 = BeautifulSoup(result2, 'html.parser')
         status_list = xmlsoup2.findAll("status")[0].get_text()
         
+        #조회된 데이터가 없을 때 처리 
         if status_list == "NON_DATA":
             print("조회된 데이터가 없습니니다.")
         else:
@@ -81,9 +87,8 @@ elif rep_kind ==2 :
                 file_nm = "유진기업_임원주요주주 소유 보고서.xlsx"
                 data2.to_excel(os.path.join(file_path, file_nm),encoding="euc-kr",index=False)
 
-    except :
-        print("error")
+    except Exception as e :
+            print(traceback.format_exc())
 else:
     print("보고서 종류를 다시 선택해주세요")
-
         
