@@ -14,7 +14,7 @@ from openpyxl import Workbook
 
 def company_to_excel(com_no): #유진기업
     
-    API_KEY=""
+    API_KEY="??"
     com_no = str(input('''회사 코드를 입력하세요 
     - 유진기업 : 00184667 
     - 동양 : 00117337 
