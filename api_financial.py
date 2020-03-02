@@ -14,13 +14,8 @@ from openpyxl import Workbook
 
 def company_to_excel(com_no): #유진기업
     
-    API_KEY="??"
-    com_no = str(input('''회사 코드를 입력하세요 
-    - 유진기업 : 00184667 
-    - 동양 : 00117337 
-    - 유진증권 : 00131054
-    - 한일합성(비상장) : 00163266
-    '''))
+    API_KEY="fbd3f31ee413a318c81b0fe2bc0ad8b283dcfe21"
+
 
     total_dataframe = pd.DataFrame(columns = ['접수번호', '고유번호', '종목 코드', '계정명', '개별/연결구분', '개별/연결명', '재무제표구분', '재무제표명',
        '당기명', '당기일자', '당기금액', '전기명', '전기일자', '전기금액', '계정과목 정렬순서', '당기누적금액',
@@ -30,6 +25,7 @@ def company_to_excel(com_no): #유진기업
     total_dataframe2 = pd.DataFrame(columns = ['접수번호', '고유번호', '종목 코드', '계정명', '개별/연결구분', '개별/연결명', '재무제표구분', '재무제표명',
        '당기명', '당기일자', '당기금액', '전기명', '전기일자', '전기금액', '계정과목 정렬순서', '당기누적금액',
        '전기누적금액'])
+       
     for i in range(11011, 11015):
         for j in range(2016, 2020):
             com_url = "https://opendart.fss.or.kr/api/fnlttSinglAcnt.json?crtfc_key="+API_KEY+"&corp_code="+com_no+"&bsns_year="+str(j)+"&reprt_code="+str(i)
@@ -67,7 +63,7 @@ def company_to_excel(com_no): #유진기업
 
 
 
-            #유진증권과 한일합성은 자료가 없기 때문에 pass 처리 
+            #유진증권과 한일합성, 유진저축은행은 자료가 없기 때문에 pass 처리 
             except BaseException:
                 pass
 
@@ -87,43 +83,19 @@ def company_to_excel(com_no): #유진기업
     output2 = total_dataframe2.pivot_table(values = "당기금액", index = "계정명", columns = "당기일자" ,aggfunc='first')
     output = total_dataframe.pivot_table(values = "당기금액", index = "계정명", columns = "당기일자" ,aggfunc='first')
 
-    if not os.path.exists('output.xlsx'):
+    if not os.path.exists('output.xlsx'):#파일 초기에 생성하기 위해 유진기업은 mode = "w"로 지정!
         with pd.ExcelWriter('output.xlsx', mode='w', engine='openpyxl') as writer:
             if com_no == "00184667":
                 output.to_excel(writer, sheet_name = '유진기업', startrow = 1, startcol = 1) #재무제표
                 output2.to_excel(writer, sheet_name = '유진기업', startrow = 14, startcol = 1) #손익계산서
                 writer.save()
                 writer.close()
-                
-            elif com_no == "00117337":
-                output.to_excel(writer, sheet_name = '동양', startrow = 1, startcol = 1)
-                output2.to_excel(writer, sheet_name = '동양', startrow = 14, startcol = 1)
-                writer.save()
-                writer.close()
-            
-            elif com_no == "00131054":
-                output.to_excel(writer, sheet_name = '유진증권', startrow = 1, startcol = 1)
-                output2.to_excel(writer, sheet_name = '유진증권', startrow = 14, startcol = 1)
-                writer.save()
-                writer.close()
-            
-            elif com_no == "00163266":
-                output.to_excel(writer, sheet_name = '한일합성', startrow = 1, startcol = 1)
-                output2.to_excel(writer, sheet_name = '한일합성', startrow = 14, startcol = 1)
-                writer.save()
-                writer.close()
-                
+
             else :
                 print("잘못입력하셨습니다.")
-    else:
+    else:#만약 이미 파일이 존재한다면 그 파일에 시트를 append! 
         with pd.ExcelWriter('output.xlsx', mode='a', engine='openpyxl') as writer:
-            if com_no == "00184667":
-                output.to_excel(writer, sheet_name = '유진기업', startrow = 1, startcol = 1)
-                output2.to_excel(writer, sheet_name = '유진기업', startrow = 14, startcol = 1)
-                writer.save()
-                writer.close()
-                
-            elif com_no == "00117337":
+            if com_no == "00117337":
                 output.to_excel(writer, sheet_name = '동양', startrow = 1, startcol = 1)
                 output2.to_excel(writer, sheet_name = '동양', startrow = 14, startcol = 1)
                 writer.save()
@@ -140,7 +112,17 @@ def company_to_excel(com_no): #유진기업
                 output2.to_excel(writer, sheet_name = '한일합성', startrow = 14, startcol = 1)
                 writer.save()
                 writer.close()
-            
+
+            elif com_no == "00165149":
+                output.to_excel(writer, sheet_name = '유진저축은행', startrow = 1, startcol = 1)
+                output2.to_excel(writer, sheet_name = '유진저축은행', startrow = 14, startcol = 1)
+                writer.save()
+                writer.close()
+
             else :
                 print("잘못입력하셨습니다.")
     return 
+
+corp_list = ["00184667","00117337","00163266", "00131054", "00165149"]
+for com_no in corp_list:
+    company_to_excel(com_no)
