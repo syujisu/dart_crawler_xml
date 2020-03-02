@@ -54,11 +54,10 @@ p = parser.make2d(table[1])
 
 df = pd.DataFrame(p[0:])
 header = df.iloc[0]
-df = df[1:]
 
 df.rename (columns = header , inplace = True)
 df=df.set_index('')
+
 writer = pd.ExcelWriter('ex_test.xlsx', engine = 'xlsxwriter')
 df.to_excel(writer, sheet_name = '유진기업')
 writer.save()
- 
