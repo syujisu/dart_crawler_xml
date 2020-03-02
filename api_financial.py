@@ -93,6 +93,7 @@ def company_to_excel(com_no): #유진기업
 
             else :
                 print("잘못입력하셨습니다.")
+                
     else:#만약 이미 파일이 존재한다면 그 파일에 시트를 append! 
         with pd.ExcelWriter('output.xlsx', mode='a', engine='openpyxl') as writer:
             if com_no == "00117337":
