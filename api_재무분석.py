@@ -90,8 +90,8 @@ def company_to_excel(com_no): #유진기업
     if not os.path.exists('output.xlsx'):
         with pd.ExcelWriter('output.xlsx', mode='w', engine='openpyxl') as writer:
             if com_no == "00184667":
-                output.to_excel(writer, sheet_name = '유진기업', startrow = 1, startcol = 1)
-                output2.to_excel(writer, sheet_name = '유진기업', startrow = 14, startcol = 1)
+                output.to_excel(writer, sheet_name = '유진기업', startrow = 1, startcol = 1) #재무제표
+                output2.to_excel(writer, sheet_name = '유진기업', startrow = 14, startcol = 1) #손익계산서
                 writer.save()
                 writer.close()
                 
