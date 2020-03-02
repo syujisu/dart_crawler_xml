@@ -14,7 +14,7 @@ from openpyxl import Workbook
 
 def company_to_excel(com_no): #유진기업
     
-    API_KEY="fbd3f31ee413a318c81b0fe2bc0ad8b283dcfe21"
+    API_KEY="??"
 
 
     total_dataframe = pd.DataFrame(columns = ['접수번호', '고유번호', '종목 코드', '계정명', '개별/연결구분', '개별/연결명', '재무제표구분', '재무제표명',
