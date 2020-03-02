@@ -27,25 +27,6 @@ com_no = str(input("2.기업 고유 번호를 입력하세요 : "))
 rep_kind = int(input("3.보고서 종류를 숫자로 입력하세요 (1.대량보유 상황보고서 / 2.임원주요주주 소유보고서) : "))
 file_path = input("4.엑셀 파일을 저장할 폴더명만 쓰세요 : (예:C:\py_temp) ")
 
-#xml.html -> xml 파일로 저장 함수 
-def to_xml(df, filename=None, mode='w'):
-    def row_to_xml(row):
-        xml = ['<item>']
-        for i, col_name in enumerate(row.index):
-            xml.append('  <field name="{0}">{1}</field>'.format(col_name, row.iloc[i]))
-        xml.append('</item>')
-        return '\n'.join(xml)
-    res = '\n'.join(df.apply(row_to_xml, axis=1))
-
-    if filename is None:
-        return res
-    with open(filename, mode) as f:
-        f.write(res)
-pd.DataFrame.to_xml = to_xml
-
-print (temp1.to_xml())
-temp1.to_xml('output.xml')
-
 #보고서 종류에 따라 excel로 정리 
 
 if rep_kind == 1:
@@ -109,4 +90,24 @@ elif rep_kind ==2 :
             print(traceback.format_exc())
 else:
     print("보고서 종류를 다시 선택해주세요")
+
+    
+#xml.html -> xml 파일로 저장 함수 
+def to_xml(df, filename=None, mode='w'):
+    def row_to_xml(row):
+        xml = ['<item>']
+        for i, col_name in enumerate(row.index):
+            xml.append('  <field name="{0}">{1}</field>'.format(col_name, row.iloc[i]))
+        xml.append('</item>')
+        return '\n'.join(xml)
+    res = '\n'.join(df.apply(row_to_xml, axis=1))
+
+    if filename is None:
+        return res
+    with open(filename, mode) as f:
+        f.write(res)
+pd.DataFrame.to_xml = to_xml
+
+print (temp1.to_xml())
+temp1.to_xml('output.xml')
         
