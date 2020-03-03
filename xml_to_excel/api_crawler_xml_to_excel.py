@@ -29,10 +29,9 @@ import os
 
 
 
-euxml=open(r'C:\Users\user\Desktop\document\1.xml',"r")
-eusoup=BeautifulSoup(euxml,'html.parser')
-eusoup.encoding='utf-8'
-body = eusoup.find('body')
+fp=open(r'C:\Users\user\Desktop\document\1.xml',"r")
+soup=BeautifulSoup(fp,'html.parser', encoding = 'utf-8')
+body = soup.find('body')
 table = body.findAll('table')
 
 
