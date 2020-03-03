@@ -43,7 +43,6 @@ from bs4 import BeautifulSoup
 from selenium import webdriver
 import traceback
 
-
 def url_to_excel(com_url):
     api_key = "fbd3f31ee413a318c81b0fe2bc0ad8b283dcfe21"
 
@@ -56,10 +55,8 @@ def url_to_excel(com_url):
         table = body.find_all("table")
         p = parser.make2d(table[1])
 
-        df = pd.DataFrame(p[0:])
-        header = df.iloc[0]
-        df.rename (columns = header , inplace = True)
-        df = df.reset_index(inplace=True)
+        df = pd.DataFrame(p[0:], columns=['과목','2018.12.31','2018.12.31','2017.12.31','2017.12.31','2016.12.31','2016.12.31'])
+        df = df.set_index('과목')
 
     else:
         try:
@@ -104,10 +101,8 @@ def url_to_excel(com_url):
                 writer.close()
 
             else :
-                print("잘못입력하셨습니다.")
+                pass
     return 
-
-
 
 #실행 코드 
 url_list = ["http://dart.fss.or.kr/report/viewer.do?rcpNo=20190401004107&dcmNo=6612848&eleId=15&offset=1908112&length=146218&dtd=dart3.xsd", #유진기업
