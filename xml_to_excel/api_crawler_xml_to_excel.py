@@ -43,7 +43,7 @@ company_code_list = ['00184667', '00117337', '00131054']
 
 
 # report_no 찾기 : xml -> rcept_no
-def report_no():
+def report_no_make():
     API_KEY = "fbd3f31ee413a318c81b0fe2bc0ad8b283dcfe21"
 
     url = "https://opendart.fss.or.kr/api/list.xml?crtfc_key="+API_KEY+"&corp_code="+company_code + \
@@ -65,12 +65,13 @@ def report_no():
 
     report_code = data[data['report_nm'] == '사업보고서 (2018.12)']
     rcept_no = report_code['rcept_no']
+    print(rcept_no)
 
     return rcept_no
 
 
 for company_code in company_code_list:
-    report_no()
+    report_no_make()
 
 
 # fp = open(r'C:\Users\user\Desktop\document\1.xml', "r")
