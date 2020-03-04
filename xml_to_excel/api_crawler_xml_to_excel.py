@@ -70,23 +70,29 @@ def report_no_make():
     return rcept_no
 
 
+# run report_to_make()
 for company_code in company_code_list:
     report_no_make()
 
 
-# fp = open(r'C:\Users\user\Desktop\document\1.xml', "r")
-# soup = BeautifulSoup(fp, 'html.parser', encoding='utf-8')
-# body = soup.find('body')
-# table = body.findAll('table')
+report_no = ['20190401004107', '20190401003691',
+             '20190401002982']  # 유진, 동양, 유진투자증권
 
 
-# for i in range(len(table)):
-#     a = pd.DataFrame(parser.make2d(table[i]))
+def download():
+    url3 = "https://opendart.fss.or.kr/api/document.xml?crtfc_key=" + \
+        API_KEY+"&rcept_no="+report_no[2]
 
-#     if a.iloc[0, 0] == '재무상태표':
-#         df = pd.DataFrame(parser.make2d(table[i+1]))
-#         break
+    webbrowser.open(url3)
 
-# # fp = open(r"C:\Users\user\Desktop\document\1.xml", "r")
+    time.sleep(5)
 
-# # soup = BeautifulSoup(fp, 'html.parser')
+    os.rename('C:/Users/user/Downloads/document.xml',
+              'C:/Users/user/Downloads/document.zip')
+    os.chdir('C:/Users/user/Downloads/')
+    ex_zip = zipfile.ZipFile('document.zip')
+    ex_zip.extractall()
+    ex_zip.close()
+
+
+download()
