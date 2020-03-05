@@ -31,8 +31,18 @@ from selenium import webdriver
 import traceback
 
 
+#1번 api_crawler_xml_to_excel.py 에서 찾은 rcept_no로 url를 만듭니다. 
+#변수 지정 
+url_list = ["http://dart.fss.or.kr/report/viewer.do?rcpNo=20190401004107&dcmNo=6612848&eleId=15&offset=1908112&length=146218&dtd=dart3.xsd",  # 유진기업
+            "http://dart.fss.or.kr/report/viewer.do?rcpNo=20190814001889&dcmNo=6845532&eleId=17&offset=1354185&length=99327&dtd=dart3.xsd",  # 동양
+            "http://dart.fss.or.kr/report/viewer.do?rcpNo=20190401002982&dcmNo=6607495&eleId=15&offset=1221195&length=219209&dtd=dart3.xsd"]  # 유진증권
+
+
+
 def url_to_excel(com_url):
     api_key = "fbd3f31ee413a318c81b0fe2bc0ad8b283dcfe21"
+
+    #유진증권은 유진기업과 동양과 형태가 조금 다르기 때문에 컬럼명을 지어줬습니다. 
 
     if com_url == "http://dart.fss.or.kr/report/viewer.do?rcpNo=20190401002982&dcmNo=6607495&eleId=15&offset=1221195&length=219209&dtd=dart3.xsd":
         report = urlopen(com_url)
@@ -47,7 +57,7 @@ def url_to_excel(com_url):
                                           '2017.12.31', '2017.12.31', '2016.12.31', '2016.12.31'])
         df = df.set_index('과목')
 
-    else:
+    else: #유진기업과 동양은 index를 동일한 형태로 가지고 있어 같이 처리합니다 .
         try:
             report = urlopen(com_url)
             r = report.read()
@@ -93,10 +103,6 @@ def url_to_excel(com_url):
     return
 
 
-# 실행 코드
-url_list = ["http://dart.fss.or.kr/report/viewer.do?rcpNo=20190401004107&dcmNo=6612848&eleId=15&offset=1908112&length=146218&dtd=dart3.xsd",  # 유진기업
-            "http://dart.fss.or.kr/report/viewer.do?rcpNo=20190814001889&dcmNo=6845532&eleId=17&offset=1354185&length=99327&dtd=dart3.xsd",  # 동양
-            "http://dart.fss.or.kr/report/viewer.do?rcpNo=20190401002982&dcmNo=6607495&eleId=15&offset=1221195&length=219209&dtd=dart3.xsd"]  # 유진증권
 
 for com_url in url_list:
     url_to_excel(com_url)

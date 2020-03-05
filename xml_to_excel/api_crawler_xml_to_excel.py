@@ -81,13 +81,6 @@ def report_no_find():
     return rcept_no
 
 
-# run report_to_make()
-for company_code in company_code_list:
-    report_no_find()
-
-
-  # 유진, 동양, 유진투자증권
-
 
 def download():
     # 회사 별 리포트 번호에 따라 다운로드 -> zip 파일 생성 -> 압축 해제
@@ -144,6 +137,8 @@ def download():
 
 
 def url_to_excel():
+
+    #유진기업과 동양은 재무상태표라는 제목을 찾아 표출할 수 있었습니다.
     if report == "20190401004107":
 
         fp =   open(r'C:/Users/user/Downloads/유진기업/'+report+'.xml', 'r')
@@ -181,6 +176,7 @@ def url_to_excel():
         writer.save()
 
 
+#하지만 유진증권은 형태가 다르고, xpath나 태그 또한 다르게 나와 테이블 순서인 번호로 찾아 데이터프레임을 생성하였습니다. 
     elif report == "20190401002982":
         
         fp =   open(r'C:/Users/user/Downloads/유진증권/'+report+'.xml', 'r')
@@ -206,6 +202,11 @@ def url_to_excel():
 
 #runnable main
 if __name__ == "__main__":
+    for company_code in company_code_list:
+        report_no_find()
+
+
+
     for report in reports:
         download()
         url_to_excel()
