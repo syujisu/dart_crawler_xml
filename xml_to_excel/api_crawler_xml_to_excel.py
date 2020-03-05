@@ -20,18 +20,24 @@
 # 20190401002982 유진증권
 # https://opendart.fss.or.kr/api/document.xml?crtfc_key=fbd3f31ee413a318c81b0fe2bc0ad8b283dcfe21&rcept_no=20190401002982
 import time
-from bs4 import BeautifulSoup
 import urllib.parse as parser
 import selenium
 import pandas as pd
+import zipfile
+import traceback
+import traceback
+import os
+import zipfile
+import webbrowser
+import shutil
+
+from openpyxl.utils.datetime import to_excel
 from html_table_parser import parser_functions as parser
 from urllib.request import urlopen
 from bs4 import BeautifulSoup
 from selenium import webdriver
-import traceback
-import os
-import zipfile
-from openpyxl.utils.datetime import to_excel
+from bs4 import BeautifulSoup
+
 
 # 00184667 유진기업
 # 00131054 유진증권
@@ -86,115 +92,120 @@ for company_code in company_code_list:
 def download():
     # 회사 별 리포트 번호에 따라 다운로드 -> zip 파일 생성 -> 압축 해제
 
-    for report in reports:
-        if report == '20190401004107':
-            url_eu = "https://opendart.fss.or.kr/api/document.xml?crtfc_key=" + API_KEY + "&rcept_no=" + report
-            webbrowser.open(url_eu)
-            time.sleep(5)
+    if report == '20190401004107':
+        url_eu = "https://opendart.fss.or.kr/api/document.xml?crtfc_key=" + API_KEY + "&rcept_no=" + report
+        webbrowser.open(url_eu)
+        time.sleep(5)
 
 
-            os.mkdir('C:/Users/user/Downloads/유진기업'),
-            os.rename('C:/Users/user/Downloads/document.xml',
-                    'C:/Users/user/Downloads/유진.zip'),
+        os.mkdir('C:/Users/user/Downloads/유진기업'),
+        os.rename('C:/Users/user/Downloads/document.xml',
+                'C:/Users/user/Downloads/유진.zip'),
 
-            shutil.move('C:/Users/user/Downloads/유진.zip','C:/Users/user/Downloads/유진기업/유진.zip'),
-            os.chdir('C:/Users/user/Downloads/유진기업'),
-            ex_zip = zipfile.ZipFile('C:/Users/user/Downloads/유진기업/유진.zip')
-            ex_zip.extractall()
-            ex_zip.close()
+        shutil.move('C:/Users/user/Downloads/유진.zip','C:/Users/user/Downloads/유진기업/유진.zip'),
+        os.chdir('C:/Users/user/Downloads/유진기업'),
+        ex_zip = zipfile.ZipFile('C:/Users/user/Downloads/유진기업/유진.zip')
+        ex_zip.extractall()
+        ex_zip.close()
 
-        elif report == '20190401003691':
-            url_dong = "https://opendart.fss.or.kr/api/document.xml?crtfc_key=" + API_KEY + "&rcept_no=" + report
-            webbrowser.open(url_dong)
-            time.sleep(5)
+    elif report == '20190401003691':
+        url_dong = "https://opendart.fss.or.kr/api/document.xml?crtfc_key=" + API_KEY + "&rcept_no=" + report
+        webbrowser.open(url_dong)
+        time.sleep(5)
 
-            os.mkdir('C:/Users/user/Downloads/동양'),
-            os.rename('C:/Users/user/Downloads/document.xml',
-                    'C:/Users/user/Downloads/동양.zip')
+        os.mkdir('C:/Users/user/Downloads/동양'),
+        os.rename('C:/Users/user/Downloads/document.xml',
+                'C:/Users/user/Downloads/동양.zip')
 
-            shutil.move('C:/Users/user/Downloads/동양.zip','C:/Users/user/Downloads/동양/동양.zip'),
-            os.chdir('C:/Users/user/Downloads/동양')
-            ex_zip = zipfile.ZipFile('C:/Users/user/Downloads/동양/동양.zip')
-            ex_zip.extractall()
-            ex_zip.close()
-            
-        elif report == "20190401002982":
-            url_fi = "https://opendart.fss.or.kr/api/document.xml?crtfc_key=" + API_KEY + "&rcept_no=" + report
-            webbrowser.open(url_fi)
-            time.sleep(5)
+        shutil.move('C:/Users/user/Downloads/동양.zip','C:/Users/user/Downloads/동양/동양.zip'),
+        os.chdir('C:/Users/user/Downloads/동양')
+        ex_zip = zipfile.ZipFile('C:/Users/user/Downloads/동양/동양.zip')
+        ex_zip.extractall()
+        ex_zip.close()
+        
+    elif report == "20190401002982":
+        url_fi = "https://opendart.fss.or.kr/api/document.xml?crtfc_key=" + API_KEY + "&rcept_no=" + report
+        webbrowser.open(url_fi)
+        time.sleep(5)
 
-            os.mkdir('C:/Users/user/Downloads/유진증권'),
-            os.rename('C:/Users/user/Downloads/document.xml',
-                    'C:/Users/user/Downloads/유진증권.zip')
+        os.mkdir('C:/Users/user/Downloads/유진증권'),
+        os.rename('C:/Users/user/Downloads/document.xml',
+                'C:/Users/user/Downloads/유진증권.zip')
 
-            shutil.move('C:/Users/user/Downloads/유진증권.zip','C:/Users/user/Downloads/유진증권/유진증권.zip'),
-            os.chdir('C:/Users/user/Downloads/유진증권')
-            ex_zip = zipfile.ZipFile('C:/Users/user/Downloads/유진증권/유진증권.zip')
-            ex_zip.extractall()
-            ex_zip.close()
-            
-        else:
-            print(traceback.format_exc())
+        shutil.move('C:/Users/user/Downloads/유진증권.zip','C:/Users/user/Downloads/유진증권/유진증권.zip'),
+        os.chdir('C:/Users/user/Downloads/유진증권')
+        ex_zip = zipfile.ZipFile('C:/Users/user/Downloads/유진증권/유진증권.zip')
+        ex_zip.extractall()
+        ex_zip.close()
+        
+    else:
+        print(traceback.format_exc())
 
 
 
 def url_to_excel():
-    for report in reports:
-        if report == "20190401004107":
+    if report == "20190401004107":
 
-            fp =   open(r'C:/Users/user/Downloads/유진기업/'+report+'.xml', 'r')
-            soup = BeautifulSoup(fp, 'html.parser')
-            body = soup.find('body')
+        fp =   open(r'C:/Users/user/Downloads/유진기업/'+report+'.xml', 'r')
+        soup = BeautifulSoup(fp, 'html.parser')
+        body = soup.find('body')
 
-            table1 = body.findAll('table')
-
-
-            for i in range(len(table1)):
-                a=pd.DataFrame(parser.make2d(table1[i]))
-
-                if a.iloc[0,0]=='재무상태표':
-                    df1=pd.DataFrame(parser.make2d(table1[i+1]))
-            
-            df1.to_excel(writer, sheet_name = '유진기업',startrow = 1, startcol = 1)
-            writer.save()
-
-        elif report == "20190401003691":
-            
-            fp =   open(r'C:/Users/user/Downloads/동양/'+report+'.xml', 'r')
-            soup = BeautifulSoup(fp, 'html.parser')
-            body = soup.find('body')
-
-            table1 = body.findAll('table')
+        table1 = body.findAll('table')
 
 
-            for i in range(len(table1)):
-                a2=pd.DataFrame(parser.make2d(table1[i]))
+        for i in range(len(table1)):
+            a=pd.DataFrame(parser.make2d(table1[i]))
 
-                if a2.iloc[0,0]=='재무상태표':
-                    df2=pd.DataFrame(parser.make2d(table1[i+1]))
-                    
-            df2.to_excel(writer, sheet_name = '동양',startrow = 1, startcol = 1)
-            writer.save()
+            if a.iloc[0,0]=='재무상태표':
+                df1=pd.DataFrame(parser.make2d(table1[i+1]))
+        
+        df1.to_excel(writer, sheet_name = '유진기업',startrow = 1, startcol = 1)
+        writer.save()
+
+    elif report == "20190401003691":
+        
+        fp =   open(r'C:/Users/user/Downloads/동양/'+report+'.xml', 'r')
+        soup = BeautifulSoup(fp, 'html.parser')
+        body = soup.find('body')
+
+        table1 = body.findAll('table')
 
 
-        elif report == "20190401002982":
-            
-            fp =   open(r'C:/Users/user/Downloads/유진증권/'+report+'.xml', 'r')
-            soup = BeautifulSoup(fp, 'html.parser')
-            body = soup.find('body')
+        for i in range(len(table1)):
+            a2=pd.DataFrame(parser.make2d(table1[i]))
 
-            table2 = body.findAll('table')
-
-
-            for i in range(len(table2)):
-                df3=pd.DataFrame(parser.make2d(table2[306]))
+            if a2.iloc[0,0]=='재무상태표':
+                df2=pd.DataFrame(parser.make2d(table1[i+1]))
                 
-            df3.to_excel(writer, sheet_name = '유진증권',startrow = 1, startcol = 1)
-            writer.save()
-            writer.close()
+        df2.to_excel(writer, sheet_name = '동양',startrow = 1, startcol = 1)
+        writer.save()
 
 
-        else:
-            print(traceback.format_exc())
+    elif report == "20190401002982":
+        
+        fp =   open(r'C:/Users/user/Downloads/유진증권/'+report+'.xml', 'r')
+        soup = BeautifulSoup(fp, 'html.parser')
+        body = soup.find('body')
 
-                    
+        table2 = body.findAll('table')
+
+
+        for i in range(len(table2)):
+            df3=pd.DataFrame(parser.make2d(table2[306]))
+            
+        df3.to_excel(writer, sheet_name = '유진증권',startrow = 1, startcol = 1)
+        writer.save()
+        writer.close()
+
+
+    else:
+        print(traceback.format_exc())
+
+                
+
+
+#runnable main
+if __name__ == "__main__":
+    for report in reports:
+        download()
+        url_to_excel()
