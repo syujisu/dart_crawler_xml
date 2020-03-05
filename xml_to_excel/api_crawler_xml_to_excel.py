@@ -31,6 +31,7 @@ from selenium import webdriver
 import traceback
 import os
 import zipfile
+from openpyxl.utils.datetime import to_excel
 
 # 00184667 유진기업
 # 00131054 유진증권
@@ -39,11 +40,14 @@ import zipfile
 # 00165149 유진저축은행
 # rcept_no 찾기
 
+
+#변수 , 필요한 리스트 지정
 company_code_list = ['00184667', '00117337', '00131054']
 API_KEY = "fbd3f31ee413a318c81b0fe2bc0ad8b283dcfe21"
+writer = pd.ExcelWriter('output_excel.xlsx', mode='w', engine='openpyxl')
+reports = ['20190401004107', '20190401003691','20190401002982']
 
 # report_no 찾기 : xml -> rcept_no
-
 
 def report_no_find():
 
@@ -76,7 +80,7 @@ for company_code in company_code_list:
     report_no_find()
 
 
-reports = ['20190401004107', '20190401003691','20190401002982']  # 유진, 동양, 유진투자증권
+  # 유진, 동양, 유진투자증권
 
 
 def download():
@@ -131,3 +135,66 @@ def download():
             
         else:
             print(traceback.format_exc())
+
+
+
+def url_to_excel():
+    for report in reports:
+        if report == "20190401004107":
+
+            fp =   open(r'C:/Users/user/Downloads/유진기업/'+report+'.xml', 'r')
+            soup = BeautifulSoup(fp, 'html.parser')
+            body = soup.find('body')
+
+            table1 = body.findAll('table')
+
+
+            for i in range(len(table1)):
+                a=pd.DataFrame(parser.make2d(table1[i]))
+
+                if a.iloc[0,0]=='재무상태표':
+                    df1=pd.DataFrame(parser.make2d(table1[i+1]))
+            
+            df1.to_excel(writer, sheet_name = '유진기업',startrow = 1, startcol = 1)
+            writer.save()
+
+        elif report == "20190401003691":
+            
+            fp =   open(r'C:/Users/user/Downloads/동양/'+report+'.xml', 'r')
+            soup = BeautifulSoup(fp, 'html.parser')
+            body = soup.find('body')
+
+            table1 = body.findAll('table')
+
+
+            for i in range(len(table1)):
+                a2=pd.DataFrame(parser.make2d(table1[i]))
+
+                if a2.iloc[0,0]=='재무상태표':
+                    df2=pd.DataFrame(parser.make2d(table1[i+1]))
+                    
+            df2.to_excel(writer, sheet_name = '동양',startrow = 1, startcol = 1)
+            writer.save()
+
+
+        elif report == "20190401002982":
+            
+            fp =   open(r'C:/Users/user/Downloads/유진증권/'+report+'.xml', 'r')
+            soup = BeautifulSoup(fp, 'html.parser')
+            body = soup.find('body')
+
+            table2 = body.findAll('table')
+
+
+            for i in range(len(table2)):
+                df3=pd.DataFrame(parser.make2d(table2[306]))
+                
+            df3.to_excel(writer, sheet_name = '유진증권',startrow = 1, startcol = 1)
+            writer.save()
+            writer.close()
+
+
+        else:
+            print(traceback.format_exc())
+
+                    
