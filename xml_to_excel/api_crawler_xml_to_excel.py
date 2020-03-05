@@ -76,36 +76,58 @@ for company_code in company_code_list:
     report_no_find()
 
 
-report_no = ['20190401004107', '20190401003691',
-             '20190401002982']  # 유진, 동양, 유진투자증권
+reports = ['20190401004107', '20190401003691','20190401002982']  # 유진, 동양, 유진투자증권
 
 
 def download():
     # 회사 별 리포트 번호에 따라 다운로드 -> zip 파일 생성 -> 압축 해제
-    for i in range(len(report_no)):
-        if report_no[0] == '20190401004107':
-            url_eu = "https://opendart.fss.or.kr/api/document.xml?crtfc_key=" + API_KEY + "&rcept_no=" + report_no[0]
+
+    for report in reports:
+        if report == '20190401004107':
+            url_eu = "https://opendart.fss.or.kr/api/document.xml?crtfc_key=" + API_KEY + "&rcept_no=" + report
             webbrowser.open(url_eu)
             time.sleep(5)
 
-            os.rename('C:/Users/user/Downloads/document.xml',
-                    'C:/Users/user/Downloads/유진.zip')
+
             os.mkdir('C:/Users/user/Downloads/유진기업'),
-            os.chdir('C:/Users/user/Downloads/유진기업')
-            ex_zip = zipfile.ZipFile('C:/Users/user/Downloads/유진.zip')
+            os.rename('C:/Users/user/Downloads/document.xml',
+                    'C:/Users/user/Downloads/유진.zip'),
+
+            shutil.move('C:/Users/user/Downloads/유진.zip','C:/Users/user/Downloads/유진기업/유진.zip'),
+            os.chdir('C:/Users/user/Downloads/유진기업'),
+            ex_zip = zipfile.ZipFile('C:/Users/user/Downloads/유진기업/유진.zip')
             ex_zip.extractall()
             ex_zip.close()
-        elif report_no[1] == '20190401003691':
-            url_dong = "https://opendart.fss.or.kr/api/document.xml?crtfc_key=" + API_KEY + "&rcept_no=" + report_no[1]
+
+        elif report == '20190401003691':
+            url_dong = "https://opendart.fss.or.kr/api/document.xml?crtfc_key=" + API_KEY + "&rcept_no=" + report
             webbrowser.open(url_dong)
             time.sleep(5)
 
+            os.mkdir('C:/Users/user/Downloads/동양'),
             os.rename('C:/Users/user/Downloads/document.xml',
                     'C:/Users/user/Downloads/동양.zip')
-            os.mkdir('C:/Users/user/Downloads/동양'),
+
+            shutil.move('C:/Users/user/Downloads/동양.zip','C:/Users/user/Downloads/동양/동양.zip'),
             os.chdir('C:/Users/user/Downloads/동양')
-            ex_zip = zipfile.ZipFile('동양.zip')
+            ex_zip = zipfile.ZipFile('C:/Users/user/Downloads/동양/동양.zip')
             ex_zip.extractall()
             ex_zip.close()
+            
+        elif report == "20190401002982":
+            url_fi = "https://opendart.fss.or.kr/api/document.xml?crtfc_key=" + API_KEY + "&rcept_no=" + report
+            webbrowser.open(url_fi)
+            time.sleep(5)
+
+            os.mkdir('C:/Users/user/Downloads/유진증권'),
+            os.rename('C:/Users/user/Downloads/document.xml',
+                    'C:/Users/user/Downloads/유진증권.zip')
+
+            shutil.move('C:/Users/user/Downloads/유진증권.zip','C:/Users/user/Downloads/유진증권/유진증권.zip'),
+            os.chdir('C:/Users/user/Downloads/유진증권')
+            ex_zip = zipfile.ZipFile('C:/Users/user/Downloads/유진증권/유진증권.zip')
+            ex_zip.extractall()
+            ex_zip.close()
+            
         else:
             print(traceback.format_exc())
