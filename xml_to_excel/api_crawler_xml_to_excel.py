@@ -40,11 +40,12 @@ import zipfile
 # rcept_no 찾기
 
 company_code_list = ['00184667', '00117337', '00131054']
-
+API_KEY = "fbd3f31ee413a318c81b0fe2bc0ad8b283dcfe21"
 
 # report_no 찾기 : xml -> rcept_no
-def report_no_make():
-    API_KEY = "fbd3f31ee413a318c81b0fe2bc0ad8b283dcfe21"
+
+
+def report_no_find():
 
     url = "https://opendart.fss.or.kr/api/list.xml?crtfc_key="+API_KEY+"&corp_code="+company_code + \
         "&bgn_de=20160101&end_de=20191231&pblntf_ty=A&pblntf_detail_ty=A002&page_no=1&page_count=10"
@@ -72,7 +73,7 @@ def report_no_make():
 
 # run report_to_make()
 for company_code in company_code_list:
-    report_no_make()
+    report_no_find()
 
 
 report_no = ['20190401004107', '20190401003691',
@@ -80,19 +81,31 @@ report_no = ['20190401004107', '20190401003691',
 
 
 def download():
-    url3 = "https://opendart.fss.or.kr/api/document.xml?crtfc_key=" + \
-        API_KEY+"&rcept_no="+report_no[2]
+    # 회사 별 리포트 번호에 따라 다운로드 -> zip 파일 생성 -> 압축 해제
+    for i in range(len(report_no)):
+        if report_no[0] == '20190401004107':
+            url_eu = "https://opendart.fss.or.kr/api/document.xml?crtfc_key=" + API_KEY + "&rcept_no=" + report_no[0]
+            webbrowser.open(url_eu)
+            time.sleep(5)
 
-    webbrowser.open(url3)
+            os.rename('C:/Users/user/Downloads/document.xml',
+                    'C:/Users/user/Downloads/유진.zip')
+            os.mkdir('C:/Users/user/Downloads/유진기업'),
+            os.chdir('C:/Users/user/Downloads/유진기업')
+            ex_zip = zipfile.ZipFile('C:/Users/user/Downloads/유진.zip')
+            ex_zip.extractall()
+            ex_zip.close()
+        elif report_no[1] == '20190401003691':
+            url_dong = "https://opendart.fss.or.kr/api/document.xml?crtfc_key=" + API_KEY + "&rcept_no=" + report_no[1]
+            webbrowser.open(url_dong)
+            time.sleep(5)
 
-    time.sleep(5)
-
-    os.rename('C:/Users/user/Downloads/document.xml',
-              'C:/Users/user/Downloads/document.zip')
-    os.chdir('C:/Users/user/Downloads/')
-    ex_zip = zipfile.ZipFile('document.zip')
-    ex_zip.extractall()
-    ex_zip.close()
-
-
-download()
+            os.rename('C:/Users/user/Downloads/document.xml',
+                    'C:/Users/user/Downloads/동양.zip')
+            os.mkdir('C:/Users/user/Downloads/동양'),
+            os.chdir('C:/Users/user/Downloads/동양')
+            ex_zip = zipfile.ZipFile('동양.zip')
+            ex_zip.extractall()
+            ex_zip.close()
+        else:
+            print(traceback.format_exc())
