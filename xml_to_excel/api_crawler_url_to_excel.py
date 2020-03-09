@@ -104,5 +104,6 @@ def url_to_excel(com_url):
 
 
 
-for com_url in url_list:
-    url_to_excel(com_url)
+if __name__ == "__main__":
+    for com_url in url_list:
+        url_to_excel(com_url)
