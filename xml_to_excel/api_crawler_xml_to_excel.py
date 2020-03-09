@@ -84,6 +84,7 @@ def report_no_find():
 
 def download():
     # 회사 별 리포트 번호에 따라 다운로드 -> zip 파일 생성 -> 압축 해제
+    #url을 다운받으면 3개 다 document.xml로 저장되기 때문에, 이름을 바꿔주고 그 이름으로 폴더를 생성해 그 아래에 압축해제해줍니다.
 
     if report == '20190401004107':
         url_eu = "https://opendart.fss.or.kr/api/document.xml?crtfc_key=" + API_KEY + "&rcept_no=" + report

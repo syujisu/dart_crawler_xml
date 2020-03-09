@@ -7,15 +7,6 @@
 # - 포괄상태표"이하는 무시하십시오.
 # - 유진기업, 동양, 유진증권 3개 기업을 대상으로 하십시오
 
-# 유진기업 2018 재무제표 url
-# http://dart.fss.or.kr/report/viewer.do?rcpNo=20190401004107&dcmNo=6612848&eleId=15&offset=1908112&length=146218&dtd=dart3.xsd
-
-# 동양
-# http://dart.fss.or.kr/report/viewer.do?rcpNo=20190814001889&dcmNo=6845532&eleId=17&offset=1354185&length=99327&dtd=dart3.xsd
-
-# 유진증권
-# http://dart.fss.or.kr/report/viewer.do?rcpNo=20190401002982&dcmNo=6607495&eleId=15&offset=1221195&length=219209&dtd=dart3.xsd
-
 
 import time
 from bs4 import BeautifulSoup
