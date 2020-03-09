@@ -35,7 +35,7 @@ def url_to_excel(com_url):
 
     #유진증권은 유진기업과 동양과 형태가 조금 다르기 때문에 컬럼명을 지어줬습니다. 
 
-    if com_url == "http://dart.fss.or.kr/report/viewer.do?rcpNo=20190401002982&dcmNo=6607495&eleId=15&offset=1221195&length=219209&dtd=dart3.xsd":
+    if com_url == url_list[2]:
         report = urlopen(com_url)
         r = report.read()
 
@@ -69,7 +69,7 @@ def url_to_excel(com_url):
 
     if not os.path.exists('output.xlsx'):  # 파일 초기에 생성하기 위해 유진기업은 mode = "w"로 지정!
         with pd.ExcelWriter('output.xlsx', mode='w', engine='openpyxl') as writer:
-            if com_url == "http://dart.fss.or.kr/report/viewer.do?rcpNo=20190401004107&dcmNo=6612848&eleId=15&offset=1908112&length=146218&dtd=dart3.xsd":
+            if com_url == url_list[0]:
                 df.to_excel(writer, sheet_name='유진기업', startrow=1, startcol=1)
                 writer.save()
                 writer.close()
@@ -79,12 +79,12 @@ def url_to_excel(com_url):
 
     else:  # 만약 이미 파일이 존재한다면 그 파일에 시트를 append!
         with pd.ExcelWriter('output.xlsx', mode='a', engine='openpyxl') as writer:
-            if com_url == "http://dart.fss.or.kr/report/viewer.do?rcpNo=20190814001889&dcmNo=6845532&eleId=17&offset=1354185&length=99327&dtd=dart3.xsd":
+            if com_url == url_list[1]:
                 df.to_excel(writer, sheet_name='동양', startrow=1, startcol=1)
                 writer.save()
                 writer.close()
 
-            elif com_url == "http://dart.fss.or.kr/report/viewer.do?rcpNo=20190401002982&dcmNo=6607495&eleId=15&offset=1221195&length=219209&dtd=dart3.xsd":
+            elif com_url == url_list[2]:
                 df.to_excel(writer, sheet_name='유진증권', startrow=1, startcol=1)
                 writer.save()
                 writer.close()
