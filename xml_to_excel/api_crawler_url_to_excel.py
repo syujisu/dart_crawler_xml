@@ -31,7 +31,7 @@ url_list = ["http://dart.fss.or.kr/report/viewer.do?rcpNo=20190401004107&dcmNo=6
 
 
 def url_to_excel(com_url):
-    api_key = "fbd3f31ee413a318c81b0fe2bc0ad8b283dcfe21"
+    api_key = ""
 
     #유진증권은 유진기업과 동양과 형태가 조금 다르기 때문에 컬럼명을 지어줬습니다. 
 
